@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitudes Realizadas</title>
+</head>
+<body>
+<h1>Listado de Solicitudes</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Estudiante</th>
+        <th>Docente</th>
+        <th>Fecha y Hora</th>
+        <th>Estado</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="solicitud : ${solicitudes}">
+        <td th:text="${solicitud.id}">1</td>
+        <td th:text="${solicitud.estudiante_id.nombre}">Nombre Estudiante</td>
+        <td th:text="${solicitud.docente_id.nombre}">Nombre Docente</td>
+        <td th:text="${solicitud.fecha_hora}">2025-05-17 14:00</td>
+        <td th:text="${solicitud.estado}">Pendiente</td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/}">Volver al inicio</a>
+</body>
+</html>

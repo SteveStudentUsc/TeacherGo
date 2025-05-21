@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Usuario</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f9fc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .registro-container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="registro-container">
+  <h1>Formulario de Registro</h1>
+
+  <form th:action="@{/registrar}" th:object="${usuario}" method="post">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" th:field="*{nombre}" required>
+
+    <label for="correo">Correo electrónico:</label>
+    <input type="email" id="correo" th:field="*{correo}" required>
+
+    <label for="contrasena">Contraseña:</label>
+    <input type="password" id="contrasena" th:field="*{contrasena}" required>
+
+    <label for="tipo">Tipo de Usuario:</label>
+    <select id="tipo" th:field="*{tipo}" required>
+      <option value="">--Seleccionar--</option>
+      <option value="Estudiante">Estudiante</option>
+      <option value="Docente">Docente</option>
+    </select>
+
+    <button type="submit">Registrarse</button>
+  </form>
+
+  <a class="back-link" th:href="@{/}">Volver al inicio</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenido a TeacherGo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .logout {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #47c142;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout:hover {
+            background-color: #2bc05f;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-msg {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="welcome-msg">
+            <h1>Bienvenido, <span th:text="${session.usuarioLogueado.nombre}">Usuario</span>!</h1>
+            <p>Tipo de usuario: <strong th:text="${session.usuarioLogueado.tipo}">Tipo</strong></p>
+        </div>
+    </div>
+
+    <!-- Opciones para Estudiante -->
+    <div th:if="${session.usuarioLogueado.tipo.name() == 'Estudiante'}">
+        <h3>Opciones para Estudiante</h3>
+        <ul>
+            <li><a th:href="@{/perfil/editar}">Editar Perfil</a></li>
+            <li><a th:href="@{/docentes/listar}">Ver docentes disponibles</a></li>
+            <li><a href="#">Solicitar una clase</a></li>
+        </ul>
+    </div>
+
+    <!-- Opciones para Docente -->
+    <div th:if="${session.usuarioLogueado.tipo.name() == 'Docente'}">
+        <h3>Opciones para Docente</h3>
+        <ul>
+            <li><a href="#">Ver solicitudes de estudiantes</a></li>
+            <li><a href="#">Ver mi perfil</a></li>
+            <li><a href="#">Historial de solicitudes</a></li>
+        </ul>
+    </div>
+
+    <a class="logout" th:href="@{/logout}">Cerrar sesión</a>
+</div>
+</body>
+</html>

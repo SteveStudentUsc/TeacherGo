@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil del Docente</title>
+</head>
+<body>
+<h1>Perfil de Docente</h1>
+
+<p><strong>Nombre:</strong> <span th:text="${docente.nombre}"></span></p>
+<p><strong>Correo:</strong> <span th:text="${docente.correo}"></span></p>
+<p><strong>Especialidades:</strong></p>
+<ul>
+  <li th:each="esp : ${docente.especialidades}" th:text="${esp}"></li>
+</ul>
+<p><strong>Disponibilidad:</strong></p>
+<ul>
+  <li th:each="horario : ${docente.disponibilidad}" th:text="${horario}"></li>
+</ul>
+<p><strong>Calificación Promedio:</strong> <span th:text="${docente.calificacionPromedio}">0.0</span></p>
+
+<a href="/">Volver al inicio</a>
+</body>
+</html>

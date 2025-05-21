@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Docente</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .docente-info {
+            margin-bottom: 30px;
+        }
+
+        .docente-info p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .valoraciones {
+            margin-top: 30px;
+        }
+
+        .valoraciones h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .valoraciones ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .valoraciones li {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .valoraciones strong {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-link {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .no-valoraciones {
+            font-style: italic;
+            color: #777;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="${docente.nombre}">Nombre del docente</h1>
+
+    <div class="docente-info">
+        <p th:text="'Correo: ' + ${docente.correo}"></p>
+        <p th:text="'Tipo: ' + ${docente.tipo}"></p>
+    </div>
+
+    <div class="valoraciones">
+        <h2>Valoraciones</h2>
+
+        <ul th:if="${valoraciones.size() > 0}">
+            <li th:each="valoracion : ${valoraciones}">
+                <p><strong>Puntuación:</strong> <span th:text="${valoracion.puntuacion}"></span></p>
+                <p><strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span></p>
+            </li>
+        </ul>
+
+        <p class="no-valoraciones" th:if="${valoraciones.size() == 0}">Este docente aún no tiene valoraciones.</p>
+    </div>
+
+    <div class="footer">
+        <a th:href="@{/docentes/listar}" class="btn-link">Volver a la lista de docentes</a>
+    </div>
+</div>
+
+</body>
+</html>

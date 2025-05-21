@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Perfil</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-editar-correo {
+            background-color: #00ff04;
+        }
+
+        .btn-editar-correo:hover {
+            background-color: #0cb300;
+        }
+
+        .btn-editar-contrasena {
+            background-color: #28a745;
+        }
+
+        .btn-editar-contrasena:hover {
+            background-color: #1e7e34;
+        }
+
+        .btn-editar-estado {
+            background-color: #00bfff; /* Azul brillante */
+        }
+
+        .btn-editar-estado:hover {
+            background-color: #0099cc;
+        }
+
+        .btn-eliminar-estado {
+            background-color: #dc3545;
+        }
+
+        .btn-eliminar-estado:hover {
+            background-color: #c82333;
+        }
+
+        .mensaje {
+            text-align: center;
+            margin-top: 15px;
+            color: green;
+        }
+
+        .error {
+            text-align: center;
+            margin-top: 15px;
+            color: red;
+        }
+
+        .historial-estados {
+            margin-top: 30px;
+        }
+
+        .historial-estados table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .historial-estados th, .historial-estados td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .historial-estados th {
+            background-color: #f2f2f2;
+        }
+
+        .historial-estados input[type="text"] {
+            width: 100%;
+            height: 80px;  /* Aumentar altura para que sea más como una publicación */
+            padding: 10px;
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            background-color: #f7f7f7;
+            resize: none;
+        }
+
+        .historial-estados input[type="text"]:focus {
+            outline: none;
+            border-color: #0099cc;
+        }
+
+        .historial-estados textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 2px solid #00bfff;
+            border-radius: 8px;
+            background-color: #f7f7f7;
+            resize: none;
+        }
+
+        .historial-estados textarea:focus {
+            outline: none;
+            border-color: #0099cc;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Editar Perfil</h2>
+
+    <form th:action="@{/perfil/editar}" th:object="${usuario}" method="post">
+        <!-- Correo -->
+        <div class="form-group">
+            <label>Correo:</label>
+            <input type="email" th:field="*{correo}" />
+        </div>
+        <div class="btn-group">
+            <button type="submit" name="accion" value="correo" class="btn btn-editar-correo">Editar</button>
+        </div>
+
+        <!-- Estado nuevo -->
+        <div class="form-group">
+            <label>Nuevo Estado:</label>
+            <textarea name="estado" required placeholder="Escribe tu estado..."></textarea>
+        </div>
+        <div class="btn-group">
+            <button type="submit" name="accion" value="estado" class="btn btn-editar-estado">Agregar Estado</button>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group" style="margin-top: 30px;">
+            <label>Contraseña:</label>
+            <input type="password" th:field="*{contrasena}" />
+        </div>
+        <div class="btn-group">
+            <button type="submit" name="accion" value="contrasena" class="btn btn-editar-contrasena">Cambiar</button>
+        </div>
+    </form>
+
+    <!-- Mensajes -->
+    <p th:if="${mensaje}" th:text="${mensaje}" class="mensaje"></p>
+    <p th:if="${error}" th:text="${error}" class="error"></p>
+
+    <!-- Historial de estados -->
+    <div class="historial-estados">
+        <h3>Mis Estados</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="estado : ${estados}">
+                <td th:text="${estado.estado}"></td>
+                <td th:text="${#temporals.format(estado.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                <td>
+                    <!-- Editar estado -->
+                    <form th:action="@{/perfil/editarEstado}" method="post" style="display:inline;">
+                        <input type="hidden" name="estadoId" th:value="${estado.id}" />
+                        <textarea name="nuevoEstado" placeholder="Editar estado..." required></textarea>
+                        <button type="submit" class="btn btn-editar-estado">Editar</button>
+                    </form>
+                    <!-- Eliminar estado -->
+                    <form th:action="@{/perfil/eliminarEstado}" method="post" style="display:inline;">
+                        <input type="hidden" name="estadoId" th:value="${estado.id}" />
+                        <button type="submit" class="btn btn-eliminar-estado">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
