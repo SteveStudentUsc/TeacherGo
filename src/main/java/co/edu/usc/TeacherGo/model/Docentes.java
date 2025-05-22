@@ -3,13 +3,26 @@ package co.edu.usc.TeacherGo.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
-@Table(name = "docentes")
 @Getter
 @Setter
+@NoArgsConstructor
+@Table(name = "docentes")
 public class Docentes extends Usuarios {
 
-    @Column(name = "calificacion_promedio")
-    private double calificacionPromedio = 0.0;
+    private double calificacionPromedio;
+
+    @ElementCollection
+    @CollectionTable(name = "docente_especialidades", joinColumns = @JoinColumn(name = "docente_id"))
+    @Column(name = "especialidad")
+    private List<String> especialidades;
+
+    @ElementCollection
+    @CollectionTable(name = "docente_disponibilidad", joinColumns = @JoinColumn(name = "docente_id"))
+    @Column(name = "horario")
+    private List<String> disponibilidad;
 }
