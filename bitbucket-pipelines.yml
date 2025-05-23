@@ -1,7 +1,5 @@
 image: gradle:8.5-jdk21
 
-
-
 definitions:
   services:
     mysql:
@@ -11,6 +9,8 @@ definitions:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_USER: user
         MYSQL_PASSWORD: password
+  caches:
+    sonar: ~/.sonar/cache
 
   steps:
     - step: &build-test
@@ -19,6 +19,7 @@ definitions:
           - mysql
         caches:
           - gradle
+          - sonar
         script:
           - export DB_HOST=127.0.0.1
           - export DB_PORT=3306
@@ -36,7 +37,6 @@ pipelines:
   branches:
     release/1.0.0:
       - step: *build-test
-
   pull-requests:
     '**':
       - step: *build-test
