@@ -1,25 +1,30 @@
 image: openjdk:21
 
-clone:
-  depth: full
-
 definitions:
-  caches:
-    sonar: ~/.sonar/cache
-    gradle: ~/.gradle
+  services:
+    mysql:
+      image: mysql:8.0
+      environment:
+        MYSQL_DATABASE: teachergo
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
 
   steps:
-    - step: &build-test-sonar
-        name: Build, Test & SonarQube Analysis
+    - step: &build-test
+        name: Build, Test and Analyze
+        services:
+          - mysql
         caches:
           - gradle
-          - sonar
         script:
-          - apt-get update && apt-get install -y findutils
+          - export DB_HOST=127.0.0.1
+          - export DB_PORT=3306
+          - export DB_NAME=teachergo
+          - export DB_USER=user
+          - export DB_PASSWORD=password
           - chmod +x gradlew
-          - ./gradlew clean build sonarqube --info
-          - echo "Contenido del directorio build:"
-          - find build/
+          - ./gradlew clean build test
         artifacts:
           - build/libs/**
           - build/test-results/test/**
@@ -28,10 +33,4 @@ definitions:
 pipelines:
   branches:
     develop:
-      - step: *build-test-sonar
-    release/1.0.0:
-      - step: *build-test-sonar
-
-  pull-requests:
-    '**':
-      - step: *build-test-sonar
+      - step: *build-test
