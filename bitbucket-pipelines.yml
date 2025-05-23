@@ -20,7 +20,7 @@ definitions:
 
 pipelines:                 # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
   branches:
-    master:
+    release/1.0.0:
       - step: *build-test-sonarcloud
   pull-requests:
     '**':
