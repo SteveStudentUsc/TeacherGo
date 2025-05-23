@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Editar Perfil</title>
@@ -165,7 +165,9 @@
         <!-- Correo -->
         <div class="form-group">
             <label>Correo:</label>
-            <input type="email" th:field="*{correo}" />
+            <label>
+                <input type="email" th:field="*{correo}" />
+            </label>
         </div>
         <div class="btn-group">
             <button type="submit" name="accion" value="correo" class="btn btn-editar-correo">Editar</button>
@@ -174,7 +176,9 @@
         <!-- Estado nuevo -->
         <div class="form-group">
             <label>Nuevo Estado:</label>
-            <textarea name="estado" required placeholder="Escribe tu estado..."></textarea>
+            <label>
+                <textarea name="estado" required placeholder="Escribe tu estado..."></textarea>
+            </label>
         </div>
         <div class="btn-group">
             <button type="submit" name="accion" value="estado" class="btn btn-editar-estado">Agregar Estado</button>
@@ -183,7 +187,9 @@
         <!-- Contraseña -->
         <div class="form-group" style="margin-top: 30px;">
             <label>Contraseña:</label>
-            <input type="password" th:field="*{contrasena}" />
+            <label>
+                <input type="password" th:field="*{contrasena}" />
+            </label>
         </div>
         <div class="btn-group">
             <button type="submit" name="accion" value="contrasena" class="btn btn-editar-contrasena">Cambiar</button>
@@ -213,7 +219,9 @@
                     <!-- Editar estado -->
                     <form th:action="@{/perfil/editarEstado}" method="post" style="display:inline;">
                         <input type="hidden" name="estadoId" th:value="${estado.id}" />
-                        <textarea name="nuevoEstado" placeholder="Editar estado..." required></textarea>
+                        <label>
+                            <textarea name="nuevoEstado" placeholder="Editar estado..." required></textarea>
+                        </label>
                         <button type="submit" class="btn btn-editar-estado">Editar</button>
                     </form>
                     <!-- Eliminar estado -->

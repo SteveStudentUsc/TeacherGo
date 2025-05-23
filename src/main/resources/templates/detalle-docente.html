@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Detalle del Docente</title>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,22 +27,27 @@
             padding: 20px;
         }
 
-        .docente-info {
+        .docente-info, .docente-especialidades, .docente-disponibilidad {
             margin-bottom: 30px;
         }
 
-        .docente-info p {
+        .docente-info p,
+        .docente-especialidades li,
+        .docente-disponibilidad li {
             font-size: 18px;
             margin: 10px 0;
         }
 
-        .valoraciones {
-            margin-top: 30px;
-        }
-
+        .docente-especialidades h2,
+        .docente-disponibilidad h2,
         .valoraciones h2 {
             color: #4CAF50;
             margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
         }
 
         .valoraciones ul {
@@ -93,10 +99,25 @@
     <div class="docente-info">
         <p th:text="'Correo: ' + ${docente.correo}"></p>
         <p th:text="'Tipo: ' + ${docente.tipo}"></p>
+        <p th:text="'Calificación promedio: ' + ${docente.calificacionPromedio}"></p>
+    </div>
+
+    <div class="docente-especialidades">
+        <h2>📚 Especialidades</h2>
+        <ul>
+            <li th:each="esp : ${docente.especialidades}" th:text="${esp}">Especialidad</li>
+        </ul>
+    </div>
+
+    <div class="docente-disponibilidad">
+        <h2>🕒 Disponibilidad Horaria</h2>
+        <ul>
+            <li th:each="horario : ${docente.disponibilidad}" th:text="${horario}">Horario</li>
+        </ul>
     </div>
 
     <div class="valoraciones">
-        <h2>Valoraciones</h2>
+        <h2>⭐ Valoraciones</h2>
 
         <ul th:if="${valoraciones.size() > 0}">
             <li th:each="valoracion : ${valoraciones}">
@@ -108,10 +129,37 @@
         <p class="no-valoraciones" th:if="${valoraciones.size() == 0}">Este docente aún no tiene valoraciones.</p>
     </div>
 
+    <div class="solicitar-cita">
+        <h2>📅 Solicitar una clase con este docente</h2>
+        <form th:action="@{/solicitudes/crear}" method="post">
+            <input type="hidden" name="docenteId" th:value="${docente.id}" />
+
+            <label for="fechaHora">Fecha y hora:</label>
+            <select id="fechaHora" name="fechaHora" required>
+                <option th:each="horario : ${docente.disponibilidad}"
+                        th:value="${horario}"
+                        th:text="${horario}">
+                </option>
+            </select>
+
+            <button type="submit">Solicitar Clase</button>
+        </form>
+
+    </div>
+
+
     <div class="footer">
         <a th:href="@{/docentes/listar}" class="btn-link">Volver a la lista de docentes</a>
     </div>
 </div>
+
+<script th:inline="javascript">
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('solicitudExitosa')) {
+        alert('Se ha enviado correctamente la solicitud');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+</script>
 
 </body>
 </html>
