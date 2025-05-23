@@ -1,4 +1,4 @@
-image: openjdk:21
+image: openjdk:24
 
 clone:
   depth: full  # SonarQube necesita el historial completo para asignar issues correctamente
@@ -19,8 +19,6 @@ definitions:
           - ls -R build
         artifacts:
           - build/libs/**
-          - build/test-results/test/**
-          - build/reports/tests/**
 
 pipelines:
   branches:
