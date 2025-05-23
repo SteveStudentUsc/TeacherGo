@@ -1,4 +1,6 @@
-image: openjdk:21
+image: gradle:8.5-jdk21
+
+
 
 definitions:
   services:
@@ -24,7 +26,7 @@ definitions:
           - export DB_USER=user
           - export DB_PASSWORD=password
           - chmod +x gradlew
-          - ./gradlew clean build test
+          - ./gradlew clean build sonar
         artifacts:
           - build/libs/**
           - build/test-results/test/**
