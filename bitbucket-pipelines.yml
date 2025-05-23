@@ -1,29 +1,34 @@
-image: openjdk:24
+image: openjdk:21
 
 clone:
-  depth: full  # SonarQube necesita el historial completo para asignar issues correctamente
+  depth: full  # SonarQube necesita el historial completo para análisis precisos
 
 definitions:
   caches:
-    sonar: ~/.sonar/cache  # Cache para SonarQube
-    gradle: ~/.gradle/caches  # Cache para Gradle
+    sonar: ~/.sonar/cache
+    gradle: ~/.gradle
+
   steps:
-    - step: &build-test-sonarcloud
-        name: Build, test and analyze on SonarQube Cloud
+    - step: &build-test-sonar
+        name: Build, Test & SonarQube Analysis
         caches:
           - gradle
           - sonar
         script:
+          - apt-get update && apt-get install -y findutils
           - chmod +x gradlew
-          - ./gradlew clean build test sonarqube
-          - ls -R build
+          - ./gradlew clean build sonar --info
+          - echo "Contenido del directorio build:"
+          - find build/
         artifacts:
           - build/libs/**
+
 
 pipelines:
   branches:
     develop:
-      - step: *build-test-sonarcloud
+      - step: *build-test-sonar
+
   pull-requests:
     '**':
-      - step: *build-test-sonarcloud
+      - step: *build-test-sonar
