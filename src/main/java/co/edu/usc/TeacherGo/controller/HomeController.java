@@ -10,4 +10,7 @@ public class HomeController {
     public String index() {
         return "index"; // Thymeleaf buscará templates/index.html
     }
+
+
+
 }

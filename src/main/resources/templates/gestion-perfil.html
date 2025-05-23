@@ -94,6 +94,15 @@
             background-color: #c82333;
         }
 
+        .btn-volver {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-volver:hover {
+            background-color: #27ae60;
+        }
+
         .mensaje {
             text-align: center;
             margin-top: 15px;
@@ -234,6 +243,11 @@
             </tbody>
         </table>
     </div>
+
+    <div class="btn-group">
+        <a th:href="@{/panel-usuario}" class="btn btn-volver">Volver al perfil</a>
+    </div>
+
 </div>
 </body>
 </html>

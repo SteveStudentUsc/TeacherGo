@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/", "/index","/registro-exitoso","/registrar",       // Asegura el index
                         "/login", "/registro", "/acerca",
-                        "/css/**", "/js/**", "/images/**", "/webjars/**"
+                        "/css/**", "/js/**", "/images/**", "/webjars/**","/error"
                 );
     }
 }
