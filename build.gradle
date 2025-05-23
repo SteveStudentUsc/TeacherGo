@@ -51,8 +51,8 @@ tasks.named('test') {
 	reports {
 		junitXml.required.set(true)
 		html.required.set(true)
-		junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/test"))
-		html.outputLocation.set(layout.buildDirectory.dir("reports/tests"))
+		junitXml.outputLocation.set(file("build/test-results/test"))
+		html.outputLocation.set(file("build/reports/tests"))
 	}
 }
 

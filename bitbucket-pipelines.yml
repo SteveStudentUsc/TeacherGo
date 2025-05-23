@@ -1,7 +1,7 @@
 image: openjdk:21
 
 clone:
-  depth: full  # SonarQube necesita el historial completo para análisis precisos
+  depth: full
 
 definitions:
   caches:
@@ -17,16 +17,19 @@ definitions:
         script:
           - apt-get update && apt-get install -y findutils
           - chmod +x gradlew
-          - ./gradlew clean build sonar --info
+          - ./gradlew clean build sonarqube --info
           - echo "Contenido del directorio build:"
           - find build/
         artifacts:
           - build/libs/**
-
+          - build/test-results/test/**
+          - build/reports/tests/**
 
 pipelines:
   branches:
     develop:
+      - step: *build-test-sonar
+    release/1.0.0:
       - step: *build-test-sonar
 
   pull-requests:
