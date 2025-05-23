@@ -1,28 +1,42 @@
-image: openjdk:24
+image: gradle:8.5-jdk21
 
-clone:
-  depth: full              # SonarQube Cloud scanner needs the full history to assign issues properly
+
 
 definitions:
-  caches:
-    sonar: ~/.sonar/cache  # Caching SonarQube Cloud artifacts will speed up your build
+  services:
+    mysql:
+      image: mysql:8.0
+      environment:
+        MYSQL_DATABASE: teachergo
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+
   steps:
-    - step: &build-test-sonarcloud
-        name: Build, test and analyze on SonarQube Cloud
+    - step: &build-test
+        name: Build, Test and Analyze
+        services:
+          - mysql
         caches:
           - gradle
-          - sonar
         script:
+          - export DB_HOST=127.0.0.1
+          - export DB_PORT=3306
+          - export DB_NAME=teachergo
+          - export DB_USER=user
+          - export DB_PASSWORD=password
           - chmod +x gradlew
-          - ./gradlew build sonar
+          - ./gradlew clean build sonar
         artifacts:
           - build/libs/**
+          - build/test-results/test/**
+          - build/reports/tests/**
 
-pipelines:                 # More info here: https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html
+pipelines:
   branches:
     release/1.0.0:
-      - step: *build-test-sonarcloud
+      - step: *build-test
+
   pull-requests:
     '**':
-      - step: *build-test-sonarcloud
-
+      - step: *build-test
