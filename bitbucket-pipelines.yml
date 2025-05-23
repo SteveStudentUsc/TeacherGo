@@ -13,6 +13,7 @@ definitions:
           - gradle
           - sonar
         script:
+          -apt-get update && apt-get install -y find utils
           - chmod +x gradlew
           - ./gradlew build sonar
         artifacts:
