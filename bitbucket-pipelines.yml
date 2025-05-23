@@ -1,4 +1,4 @@
-image: openjdk:21
+image: openjdk:24
 
 clone:
   depth: full  # SonarQube necesita el historial completo para asignar issues correctamente
@@ -17,6 +17,7 @@ definitions:
           - apt-get update && apt-get install -y findutils
           - chmod +x gradlew
           - ./gradlew clean build test sonarqube
+          - ls -R build
         artifacts:
           - build/libs/**
           - build/test-results/test/**
