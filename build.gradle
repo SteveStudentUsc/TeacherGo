@@ -45,5 +45,16 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+	reports {
+		junitXml.required.set(true)
+		html.required.set(true)
+		junitXml.outputLocation.set(layout.buildDirectory.dir("test-results/test"))
+		html.outputLocation.set(layout.buildDirectory.dir("reports/tests"))
+	}
 }
+
+
 
