@@ -104,9 +104,9 @@
     <div th:if="${session.usuarioLogueado.tipo.name() == 'Docente'}">
         <h3>Opciones para Docente</h3>
         <ul>
-            <li><a href="solicitudes">Ver solicitudes de estudiantes</a></li>
+            <li><a th:href="@{/solicitudes/docente}">Ver solicitudes de estudiantes</a></li>
             <li><a th:href="@{/perfil/editar}">Editar Perfil</a></li>
-            <li><a href="#">Mensajes</a></li>
+            <li><a href="#"></a></li>
         </ul>
     </div>
 
