@@ -1,7 +1,6 @@
 package co.edu.usc.TeacherGo.controller;
 
 import co.edu.usc.TeacherGo.model.Login;
-import co.edu.usc.TeacherGo.model.Docentes;
 import co.edu.usc.TeacherGo.model.Usuarios;
 import co.edu.usc.TeacherGo.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
