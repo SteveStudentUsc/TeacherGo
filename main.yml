@@ -1,0 +1,31 @@
+name: CI - API TEACHERGO
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+
+      - name: verificar repositorio
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Build con Gradle
+        run: gradlew.bat clean build --no-daemon
+
+      - name: subir jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: teachergo-jar
+          path: build\libs\*.jar
