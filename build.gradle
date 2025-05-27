@@ -56,5 +56,17 @@ tasks.named('test') {
 	}
 }
 
+// Script para compilar mi proyecto
+tasks.register('buildScript') {
+	group = 'build'
+	description = 'Automatizacion de compilacion y manejo de dependencias'
 
+	dependsOn 'clean'
+	dependsOn 'compileJava'
+	dependsOn 'test'
+	dependsOn 'bootJar'
 
+	doLast {
+		println "Build creado exitosamente"
+	}
+}
