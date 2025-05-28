@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Construir y probar proyecto
+    name: Contruir y probar proyecto
     runs-on: ubuntu-latest
 
     services:
@@ -46,31 +46,6 @@ jobs:
 
       - name: Grant execute permission to Gradle wrapper
         run: chmod +x ./gradlew
-
-      - name: Install Chrome and matching ChromeDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget unzip curl gnupg
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-
-          # Obtener la versión principal de Chrome (ej: 137)
-          CHROME_MAJOR_VERSION=$(google-chrome --version | grep -oP '\d+' | head -1)
-          echo "Chrome major version: $CHROME_MAJOR_VERSION"
-
-          # Obtener versión compatible de ChromeDriver
-          CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION)
-          echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
-
-          # Descargar e instalar ChromeDriver
-          wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
-          unzip /tmp/chromedriver.zip -d /usr/local/bin/
-          chmod +x /usr/local/bin/chromedriver
-
-          chromedriver --version
-          google-chrome --version
 
       - name: Build and Test with Gradle
         run: ./gradlew clean build

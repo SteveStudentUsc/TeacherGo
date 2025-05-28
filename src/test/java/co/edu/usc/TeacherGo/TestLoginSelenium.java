@@ -5,28 +5,28 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class TestLoginSelenium {
 
     @Test
     public void testInicioSesion() {
-       // la ruta en mi equipo donde deje el driver de chrome para llamado de selenium
+
+        String ciEnv = System.getenv("CI");
+
+        // Solo ejecutar si **NO** estamos en un entorno de CI
+        assumeTrue(ciEnv == null || ciEnv.isBlank(), "Test Selenium deshabilitado en entorno CI");
+
+
+        // la ruta en mi equipo donde deje el driver de chrome para llamado de selenium
         System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDriver\\chromedriver.exe");
 
-        //opcional compatbilidad con bitbucket
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
 
-
-
-        WebDriver driver = new ChromeDriver(options);
+        WebDriver driver = new ChromeDriver();
 
         try {
            // la ruta del puerto asignado a mi equipo  yla vista template de login

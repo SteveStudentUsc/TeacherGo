@@ -9,10 +9,8 @@ definitions:
         MYSQL_ROOT_PASSWORD: root
         MYSQL_USER: user
         MYSQL_PASSWORD: password
-
-  caches:
-    sonar: ~/.sonar/cache
-
+      caches:
+      sonar: ~/.sonar/cache
   steps:
     - step: &build-test
         name: Build, Test and Analyze
@@ -21,39 +19,11 @@ definitions:
         caches:
           - gradle
         script:
-          - apt-get update
-          - apt-get install -y wget unzip curl gnupg
-
-          # Instalar Google Chrome
-          - wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
-          - echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-          - apt-get update
-          - apt-get install -y google-chrome-stable
-
-          # Obtener la versión principal de Chrome
-          - CHROME_MAJOR_VERSION=$(google-chrome --version | grep -oP '(\d+)' | head -1)
-          - echo "Chrome major version: $CHROME_MAJOR_VERSION"
-
-          # Descargar la versión compatible de ChromeDriver
-          - CHROMEDRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_MAJOR_VERSION)
-          - echo "ChromeDriver version: $CHROMEDRIVER_VERSION"
-
-          # Descargar e instalar ChromeDriver
-          - wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip
-          - unzip /tmp/chromedriver.zip -d /usr/local/bin/
-          - chmod +x /usr/local/bin/chromedriver
-
-          # Confirmar versiones
-          - google-chrome --version
-          - chromedriver --version
-
-          # Configuración de base de datos para la app
           - export DB_HOST=127.0.0.1
           - export DB_PORT=3306
           - export DB_NAME=teachergo
           - export DB_USER=user
           - export DB_PASSWORD=password
-
           - chmod +x gradlew
           - ./gradlew clean build sonar
         artifacts:
@@ -65,7 +35,6 @@ pipelines:
   branches:
     develop:
       - step: *build-test
-
 pull-requests:
-  '**':
-    - step: *build-test
+    '**':
+      - step: *build-test
