@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
@@ -17,7 +18,15 @@ public class TestLoginSelenium {
        // la ruta en mi equipo donde deje el driver de chrome para llamado de selenium
         System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDriver\\chromedriver.exe");
 
-        WebDriver driver = new ChromeDriver();
+        //opcional compatbilidad con bitbucket
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+
+
+        WebDriver driver = new ChromeDriver(options);
 
         try {
            // la ruta del puerto asignado a mi equipo  yla vista template de login
@@ -31,7 +40,7 @@ public class TestLoginSelenium {
             campoContrasena.sendKeys("laurapass");
             botonIngresar.click();
 
-            //acon el wait alacanzo a ver el redericionamiento al panel  si se concluye
+            //con el wait alcanzo a ver el redericionamiento al panel  si se concluye
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.urlContains("/panel-usuario"));
             String currentUrl = driver.getCurrentUrl();
