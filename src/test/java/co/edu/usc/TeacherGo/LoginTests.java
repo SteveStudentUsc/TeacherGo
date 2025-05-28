@@ -10,10 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import co.edu.usc.TeacherGo.model.TipoUsuario;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LoginControllerTests {
+public class LoginTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -32,7 +34,7 @@ public class LoginControllerTests {
             nuevoUsuario.setCorreo(correo);
             nuevoUsuario.setContrasena(contrasena);
             nuevoUsuario.setNombre("Usuario Prueba");
-            nuevoUsuario.setTipo("Estudiante");
+            nuevoUsuario.setTipo(TipoUsuario.valueOf("Estudiante"));
             usuarioRepository.save(nuevoUsuario);
         }
     }
@@ -49,8 +51,8 @@ public class LoginControllerTests {
     @Test
     void testLoginExitoso() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
-                        .param("correo", "usuario@valido.com")
-                        .param("contrasena", "contrasena123"))
+                        .param("correo", "carlos.lopez@example.com")
+                        .param("contrasena", "securepass"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/panel-usuario"));
     }
@@ -59,8 +61,8 @@ public class LoginControllerTests {
     @Test
     void testLoginFallido() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
-                        .param("correo", "invalido@correo.com")
-                        .param("contrasena", "claveIncorrecta"))
+                        .param("correo", "esteusuarioexiste@correo.com")
+                        .param("contrasena", "parecequeno123"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("login"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("error"));
