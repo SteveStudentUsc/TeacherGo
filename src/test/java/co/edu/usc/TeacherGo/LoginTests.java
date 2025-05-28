@@ -51,8 +51,8 @@ public class LoginTests {
     @Test
     void testLoginExitoso() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/login")
-                        .param("correo", "carlos.lopez@example.com")
-                        .param("contrasena", "securepass"))
+                        .param("correo", "usuario@valido.com")
+                        .param("contrasena", "contrasena123"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/panel-usuario"));
     }
