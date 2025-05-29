@@ -91,3 +91,9 @@ jacocoTestReport {
 		html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/html"))
 	}
 }
+
+sonar {
+	properties {
+		property "sonar.coverage.jacoco.xmlReportPaths", layout.buildDirectory.file("reports/jacoco/test/jacocoTestReport.xml").get().asFile.path
+	}
+}
