@@ -25,11 +25,13 @@ definitions:
           - export DB_USER=user
           - export DB_PASSWORD=password
           - chmod +x gradlew
-          - ./gradlew clean build sonar
+          - ./gradlew clean build test jacocoTestReport sonar
         artifacts:
           - build/libs/**
           - build/test-results/test/**
           - build/reports/tests/**
+          - build/reports/jacoco/**
+          - build/reports/jacoco/test/**
 
 pipelines:
   branches:
