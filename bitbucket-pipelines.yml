@@ -33,7 +33,7 @@ definitions:
 
 pipelines:
   branches:
-    develop:
+    integraciones:
       - step: *build-test
 pull-requests:
     '**':
