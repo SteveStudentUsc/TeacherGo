@@ -17,14 +17,10 @@ public class TestLoginSelenium {
     public void testInicioSesion() {
 
         String ciEnv = System.getenv("CI");
-
         // Solo ejecutar si **NO** estamos en un entorno de CI
         assumeTrue(ciEnv == null || ciEnv.isBlank(), "Test Selenium deshabilitado en entorno CI");
-
-
         // la ruta en mi equipo donde deje el driver de chrome para llamado de selenium
         System.setProperty("webdriver.chrome.driver", "C:\\SeleniumDriver\\chromedriver.exe");
-
 
         WebDriver driver = new ChromeDriver();
 

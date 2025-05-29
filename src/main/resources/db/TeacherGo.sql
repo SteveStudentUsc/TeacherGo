@@ -1,7 +1,7 @@
 CREATE DATABASE teachergo;
 USE teachergo;
 
--- Tabla: usuarios
+
 CREATE TABLE IF NOT EXISTS usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -21,28 +21,28 @@ CREATE TABLE IF NOT EXISTS estado (
 );
 
 
--- Tabla: docentes (hereda de usuarios por JOINED strategy)
+
 CREATE TABLE IF NOT EXISTS docentes (
     id BIGINT PRIMARY KEY,
     calificacion_promedio DOUBLE DEFAULT 0,
     FOREIGN KEY (id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla: especialidades del docente
+
 CREATE TABLE IF NOT EXISTS docente_especialidades (
     docente_id BIGINT,
     especialidad VARCHAR(100),
     FOREIGN KEY (docente_id) REFERENCES docentes(id) ON DELETE CASCADE
 );
 
--- Tabla: disponibilidad horaria
+
 CREATE TABLE IF NOT EXISTS docente_disponibilidad (
     docente_id BIGINT,
     horario VARCHAR(100),
     FOREIGN KEY (docente_id) REFERENCES docentes(id) ON DELETE CASCADE
 );
 
--- Tabla: solicitudes
+
 CREATE TABLE IF NOT EXISTS solicitudes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     estudiante_id BIGINT,
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS solicitudes (
     FOREIGN KEY (docente_id) REFERENCES docentes(id) ON DELETE CASCADE
 );
 
--- Tabla: valoraciones
+
 CREATE TABLE IF NOT EXISTS valoraciones (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     docente_id BIGINT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS valoraciones (
     FOREIGN KEY (estudiante_id) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
--- Tabla: pagos
+
 CREATE TABLE IF NOT EXISTS pagos (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     solicitud_id BIGINT,
