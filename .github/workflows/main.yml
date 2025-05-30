@@ -1,14 +1,14 @@
-name: CI - Build github action
+name: CI - Build y Deploy
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "main" ]
 
 jobs:
   build:
-    name: Contruir y probar proyecto
+    name: Construir y probar proyecto
     runs-on: ubuntu-latest
 
     services:
