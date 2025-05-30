@@ -39,17 +39,16 @@ class TeacherGoApplicationTests {
 	}
 
 
-	// Test para enviar el formulario de registro POST
-	// al ejecutar este test POST  1 vez tener el cuenta que a la segunda se deben cambiar los valores de registro
-	//para evitar de que intenet guardar los mismo datos en la tabla y tire error
+	// Test para enviar el formulario de registro POST con correo aleatorio para evitar fallos de id en tabla
 
 
 		@Test
 	void testSubmitRegistrationForm() throws Exception {
+			String uniqueEmail = "testregistro" + (System.currentTimeMillis() % 100000) + "@outlook.com";
 		mockMvc.perform(MockMvcRequestBuilders.post("/registrar")
-						.param("nombre", "TestUnitario")
-						.param("correo", "testuni@hotmail.com")
-						.param("contrasena", "testeo1")
+						.param("nombre", "Prueba Unitaria del registro")
+						.param("correo", uniqueEmail)
+						.param("contrasena", "Tru2ASD")
 						.param("tipo", "Estudiante"))
 				.andExpect(MockMvcResultMatchers.status().is3xxRedirection())
 				.andExpect(MockMvcResultMatchers.redirectedUrl("/registro-exitoso"));

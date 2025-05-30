@@ -2,32 +2,184 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Solicitudes Realizadas</title>
+    <title>Solicitudes - TeacherGo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #34495e;
+            margin-top: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-msg {
+            font-size: 20px;
+        }
+
+        .request-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .request-table th, .request-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .request-table th {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+        }
+
+        .request-table td {
+            background-color: #f9f9f9;
+        }
+
+        /* Botones de acción */
+        .request-table button {
+            padding: 8px 14px;
+            margin: 4px 4px 4px 0;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-table button[name="estado"][value="Aceptada"] {
+            background-color: #4CAF50;
+        }
+
+        .request-table button[name="estado"][value="Aceptada"]:hover {
+            background-color: #43a047;
+        }
+
+        .request-table button[name="estado"][value="Rechazada"] {
+            background-color: #e74c3c;
+        }
+
+        .request-table button[name="estado"][value="Rechazada"]:hover {
+            background-color: #c0392b;
+        }
+
+        .request-table button[name="estado"][value="Pendiente"] {
+            background-color: #f39c12;
+        }
+
+        .request-table button[name="estado"][value="Pendiente"]:hover {
+            background-color: #e67e22;
+        }
+
+        /* Estilo para enlaces */
+        .btn, .logout {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .logout {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .logout:hover {
+            background-color: #c0392b;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Listado de Solicitudes</h1>
 
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Estudiante</th>
-        <th>Docente</th>
-        <th>Fecha y Hora</th>
-        <th>Estado</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="solicitud : ${solicitudes}">
-        <td th:text="${solicitud.id}">1</td>
-        <td th:text="${solicitud.estudiante_id.nombre}">Nombre Estudiante</td>
-        <td th:text="${solicitud.docente_id.nombre}">Nombre Docente</td>
-        <td th:text="${solicitud.fecha_hora}">2025-05-17 14:00</td>
-        <td th:text="${solicitud.estado}">Pendiente</td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div class="header">
+        <div class="welcome-msg">
+            <h1>Gestiona tus estudiantes, <span th:text="${session.usuarioLogueado.nombre}">Usuario</span>!</h1>
+            <p>Identificado como: <strong th:text="${session.usuarioLogueado.tipo}">Tipo</strong></p>
+        </div>
+    </div>
 
-<a th:href="@{/}">Volver al inicio</a>
+    <h3>Solicitudes de los Estudiantes</h3>
+
+    <div th:if="${#lists.isEmpty(solicitudes)}">
+        <p>No tienes solicitudes pendientes.</p>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(solicitudes)}">
+        <table class="request-table">
+            <thead>
+            <tr>
+                <th>Estudiante</th>
+                <th>Fecha y Hora</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="solicitud : ${solicitudes}">
+                <td th:text="${solicitud.estudiante.nombre}">Nombre Estudiante</td>
+                <td th:text="${solicitud.fechaHora}">Fecha y Hora</td>
+                <td th:text="${solicitud.estado}">Estado</td>
+                <td>
+                    <form th:action="@{/solicitudes/actualizar}" method="post">
+                        <input type="hidden" name="solicitudId" th:value="${solicitud.id}" />
+
+                        <button type="submit" name="estado" value="Aceptada"
+                                th:disabled="${solicitud.estado != 'Pendiente'}">Aceptar</button>
+
+                        <button type="submit" name="estado" value="Rechazada"
+                                th:disabled="${solicitud.estado != 'Pendiente'}">Rechazar</button>
+
+                        <div th:if="${solicitud.estado != 'Pendiente'}">
+                            <button type="submit" name="estado" value="Pendiente">Editar</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="logout" th:href="@{/logout}">Cerrar sesión</a>
+    <a class="btn" th:href="@{/panel-usuario}">Volver al perfil</a>
+</div>
 </body>
 </html>
